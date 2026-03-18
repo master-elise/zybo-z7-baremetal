@@ -222,7 +222,7 @@ clearbss:
     stmialt r1!,{r3}
     blt clearbss
 
-    bl ps7_init
+    /* bl ps7_init */ /* JMF: avoid overwriting the U-Boot PS7 configuration */
     /* Finally, transfer control to the user program */
     b main
 

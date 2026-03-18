@@ -22,6 +22,8 @@ all: $(TARGET)
 $(TARGET): $(OBJECTS)
 	$(CC) -o $@ $^ $(LDFLAGS)
 	@$(SZ) $(TARGET)
+	$(CROSS_COMPILE)objcopy -Obinary $(TARGET) $(subst elf,bin,$(TARGET))
+# see https://www.gnu.org/software/make/manual/html_node/Text-Functions.html
 
 %.o: %.S
 	$(AS) $(ASFLAGS) -c -o $@ $<
