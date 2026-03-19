@@ -1,7 +1,7 @@
-# Digilent Zybo Z7-10 (bare metal)
+# Red Pitaya Zynq7010 (bare metal)
 
-This repository is aimed to simplify the interaction with Digilent
-Zybo Z7-10 by using standard Linux open source utilities (such as
+This repository is aimed to simplify the interaction with the Red Pitaya
+Zynq 7010 by using standard Linux open source utilities (such as
 gcc, gdb, openocd) instead of proprietary Xilinx SDK. It is something
 like [libopencm3][3] but for Xilinx Zynq 7010.
 
@@ -9,52 +9,28 @@ like [libopencm3][3] but for Xilinx Zynq 7010.
 
   1. Check if you have these apps installed:
 
-     - `openocd`
-     - `arm-none-eabi-gdb`
-     - `arm-none-eabi-gcc`
-     - `arm-none-eabi-newlib`
+     - `arm-none-eabi-gcc` (package name `gcc-arm-none-eabi` with Debian GNU/Linux)
+     - `picolibc-arm-none-eabi`
 
-  2. Check whether the jumper JP5 set in JTAG mode on board;
+  2. A `buildroot` image including `uboot` as found at https://github.com/trabucayre/redpitaya
 
-  3. Connect your Zybo Z7 via USB (PROG/UART) to PC and turn the
-     switch "ON/OFF" on;
+  3. Open terminal and check for `/dev/ttyUSB0` when connecting the middle-USB microB port of
+the Red Pitaya
 
-  4. Open terminal and check for `/dev/ttyUSB0` and `/dev/ttyUSB1`:
+  4. When prompted by uboot, hit a key to stop the countdown leading the booting Linux
 
-```bash
-$ ls -al /dev/ttyUSB*
-crw-rw---- 1 root uucp 188, 0 Oct 10 15:50 /dev/ttyUSB0
-crw-rw---- 1 root uucp 188, 1 Oct 10 15:50 /dev/ttyUSB1
+  5. type the uboot commands
 ```
-
-  5. Add your user to the group that owns ttyUSB1 (usually `dialout` or
-  `uucp`) for getting access to UART without root permissions:
-
-```bash
-sudo usermod -aG uucp "${LOGNAME}"
-newgrp uucp
+dcache off                                                                
+fatload mmc 0 0x0 blink.bin                                          
+dcache flush                                                              
+go 0x0    
 ```
-
-  6. Create file /etc/udev/rules.d/49-digilent.rules (change the
-     group from p.5) for getting access to JTAG without root
-     permissions:
-
-```
-SUBSYSTEMS=="usb", ATTRS{idVendor}=="0403", ATTRS{idProduct}=="6010", GROUP="uucp", MODE:="0660"
-```
-
-  7. Turn off and on board;
-
-  8. Now you can run blink example for testing purpose:
-
-```bash
-cd examples/blink
-make
-make openocd &
-make run
-```
+and the red LED should blink.
 
 ## Credits
+
+Forked from https://github.com/3ap/zybo-z7-baremetal
 
   - `bsp/boot.S` & `bsp/Zynq.ld` from [bigbrett/zybo-baremetal][1]
   - `bsp/ps7_init_gpl.{c,h}` & `bsp/ps7_spl_init.c` from [Das U-boot][2]
