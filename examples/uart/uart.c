@@ -146,7 +146,6 @@ static inline void back_up(void)
 void
 get_buffered_line(void) {
   char  c;
-
   if (start_ndx != end_ndx) {
     return;
   }
@@ -215,7 +214,7 @@ static FILE __stdio = FDEV_SETUP_STREAM(sample_putc, sample_getc, sample_flush, 
 FILE *const stdin = &__stdio;
 __strong_reference(stdin, stdout);
 __strong_reference(stdin, stderr);
-//
+// end of picolib std* implementation
 
 /*
  * Called by libc stdio fwrite functions
@@ -270,12 +269,11 @@ _read(int fd, char *ptr, int len)
 }
 
 int get_delay() {
-//  char local_buf[32];
-//  printf("Enter the delay constant for blink: ");
-//  fflush(stdout);
-//  fgets(local_buf, sizeof(local_buf), stdin);
-//  return atoi(local_buf);
-  return(1000000);
+  int local_buf;
+  printf("Enter the delay constant for blink (1000000): ");
+  fflush(stdout);
+  fscanf(stdin, "%d", &local_buf);
+  return (local_buf);
 }
 
 static inline void led_blink(int delay) {

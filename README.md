@@ -10,7 +10,9 @@ like [libopencm3][3] but for Xilinx Zynq 7010.
   1. Check if you have these apps installed:
 
      - `arm-none-eabi-gcc` (package name `gcc-arm-none-eabi` with Debian GNU/Linux)
-     - `picolibc-arm-none-eabi`
+     - `picolibc-arm-none-eabi` (Debian `arm-none-eabi-gcc` lost compatibility with 
+`newlib` according to this 
+[https://www.mail-archive.com/debian-bugs-dist@lists.debian.org/msg2084326.html][post])
 
   2. A `buildroot` image including `uboot` as found at https://github.com/trabucayre/redpitaya
 
