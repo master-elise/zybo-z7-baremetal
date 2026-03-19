@@ -32,7 +32,7 @@ $(TARGET): $(OBJECTS)
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 clean:
-	rm -f $(TARGET) $(OBJECTS)
+	rm -f $(TARGET) $(OBJECTS) $(subst elf,bin,$(TARGET))
 
 openocd:
 	$(OOCD) -f interface/ftdi/digilent-hs1.cfg \
